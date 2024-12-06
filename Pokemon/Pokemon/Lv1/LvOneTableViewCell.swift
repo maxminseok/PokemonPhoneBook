@@ -31,7 +31,7 @@ final class LvOneTableViewCell: UITableViewCell {
         imageView.backgroundColor = .systemBackground
         imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 2
-        imageView.layer.cornerRadius = 20
+        imageView.layer.cornerRadius = 30
         return imageView
     }()
     
@@ -56,7 +56,7 @@ final class LvOneTableViewCell: UITableViewCell {
         profileImageView.snp.makeConstraints{
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
-            $0.width.height.equalTo(40)
+            $0.width.height.equalTo(60)
         }
         
         nameLabel.snp.makeConstraints{
