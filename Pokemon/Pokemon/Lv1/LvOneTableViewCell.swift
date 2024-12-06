@@ -55,18 +55,18 @@ final class LvOneTableViewCell: UITableViewCell {
         
         profileImageView.snp.makeConstraints{
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(40)
         }
         
         nameLabel.snp.makeConstraints{
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(10)
+            $0.leading.equalTo(profileImageView.snp.trailing).offset(20)
         }
         
         phoneNumberLabel.snp.makeConstraints{
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(10)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
     
