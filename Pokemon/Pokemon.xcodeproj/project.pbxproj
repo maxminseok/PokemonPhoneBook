@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		23FB71C32D02F58B0030A57F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 23FB71C22D02F58B0030A57F /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		23FB71952D02F00C0030A57F /* Pokemon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokemon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23FB71C32D02F58B0030A57F /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = Pokemon;
 			packageProductDependencies = (
+				23FB71C22D02F58B0030A57F /* SnapKit */,
 			);
 			productName = Pokemon;
 			productReference = 23FB71952D02F00C0030A57F /* Pokemon.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 23FB718C2D02F00C0030A57F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				23FB71C12D02F58B0030A57F /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 23FB71962D02F00C0030A57F /* Products */;
 			projectDirPath = "";
@@ -331,6 +340,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		23FB71C12D02F58B0030A57F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		23FB71C22D02F58B0030A57F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 23FB71C12D02F58B0030A57F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 23FB718D2D02F00C0030A57F /* Project object */;
 }
