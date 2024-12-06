@@ -1,5 +1,5 @@
 //
-//  LvOneViewController.swift
+//  ViewController.swift
 //  Pokemon
 //
 //  Created by 박민석 on 12/6/24.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class LvOneViewController: UIViewController {
+class ViewController: UIViewController {
     
     private var dataSource: [PhoneBook] = {
         [
@@ -56,7 +56,7 @@ class LvOneViewController: UIViewController {
     
     @objc
     private func addList() {
-        self.navigationController?.pushViewController(LvTwoViewController(), animated: true)
+        self.navigationController?.pushViewController(PhoneBookViewController(), animated: true)
     }
     
     private func configureUI() {
@@ -75,6 +75,7 @@ class LvOneViewController: UIViewController {
         addButton.snp.makeConstraints{
             $0.top.equalTo(titleLabel.snp.top)
             $0.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(titleLabel.snp.height)
         }
         
         friendsListTableView.snp.makeConstraints{
@@ -87,14 +88,14 @@ class LvOneViewController: UIViewController {
 
 }
 
-extension LvOneViewController: UITableViewDelegate {
+extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
     
 }
 
-extension LvOneViewController: UITableViewDataSource {
+extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataSource.count
     }
