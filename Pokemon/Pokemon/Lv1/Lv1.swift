@@ -25,6 +25,7 @@ class LvOneViewController: UIViewController {
         let label = UILabel()
         label.text = "친구 목록"
         label.textColor = .label
+        label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
     
@@ -32,6 +33,7 @@ class LvOneViewController: UIViewController {
         let button = UIButton()
         button.setTitle("추가", for: .normal)
         button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.black, for: .highlighted)
         button.addTarget(self, action: #selector(addList), for: .touchUpInside)
         return button
     }()
@@ -54,7 +56,7 @@ class LvOneViewController: UIViewController {
     
     @objc
     private func addList() {
-        
+        self.navigationController?.pushViewController(LvTwoViewController(), animated: true)
     }
     
     private func configureUI() {
