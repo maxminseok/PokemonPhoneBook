@@ -1,5 +1,5 @@
 //
-//  LvOneTableViewCell.swift
+//  TableViewCell.swift
 //  Pokemon
 //
 //  Created by t2023-m0072 on 12/6/24.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class LvOneTableViewCell: UITableViewCell {
+final class TableViewCell: UITableViewCell {
     
-    static let id = "LvOneTableViewCell"
+    static let id = "TableViewCell"
     
     private let nameLabel: UILabel = {
         let label = UILabel()

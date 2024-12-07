@@ -21,6 +21,7 @@ class PhoneBookViewController: UIViewController {
     private let profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true  // 이미지가 틀을 벗어나면 잘리도록 추가
         imageView.backgroundColor = .systemBackground
         imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 2
@@ -64,7 +65,7 @@ class PhoneBookViewController: UIViewController {
         
         configureUI()
     }
-
+    
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
@@ -155,13 +156,20 @@ class PhoneBookViewController: UIViewController {
         fetchData(url: url) { [weak self] (result: PokemonData?) in
             guard let self, let result else { return }
             
-            DispatchQueue.main.async {
-                self.profileImage.image = UIImage(named: result.sprites.front_default)
+            guard let imageUrl = URL(string: result.sprites.front_default) else { return }
+            if let imageData = try? Data(contentsOf: imageUrl) {
+                if let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.profileImage.image = image
+                    }
+                }
             }
         }
     }
     
+    
 }
+
 
 extension PhoneBookViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
