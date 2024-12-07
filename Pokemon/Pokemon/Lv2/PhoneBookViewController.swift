@@ -33,7 +33,7 @@ class PhoneBookViewController: UIViewController {
         button.setTitle("랜덤 이미지 생성", for: .normal)
         button.setTitleColor(.systemGray, for: .normal)
         button.setTitleColor(.black, for: .highlighted)
-        button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(createImageButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -112,9 +112,55 @@ class PhoneBookViewController: UIViewController {
     }
     
     @objc
-    private func createButtonTapped() {
-        
+    private func createImageButtonTapped() {
+        fetchPoekemonImage()
     }
+    
+    // 서버 데이터를 불러오는 메서드
+    private func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
+        let session = URLSession(configuration: .default)
+        session.dataTask(with: URLRequest(url: url)) { data, response, error in
+            guard let data, error == nil else {
+                print("데이터 로드 실패")
+                completion(nil)
+                return
+            }
+            
+            let suceessRange = 200..<300
+            if let response = response as? HTTPURLResponse, suceessRange.contains(response.statusCode) {
+                guard let decodeData = try? JSONDecoder().decode(T.self, from: data) else {
+                    print("JSON 디코딩 실패")
+                    completion(nil)
+                    return
+                }
+                completion(decodeData)
+            }
+            else {
+                print("응답 오류")
+                completion(nil)
+            }
+        }.resume()
+    }
+    
+    // 서버에서 포켓몬 이미지 불러오는 메서드
+    private func fetchPoekemonImage() {
+        let randomNumber = Int.random(in: 1...1000)
+        let urlComponents = URLComponents(string: "https://pokeapi.co/api/v2/pokemon/"+"\(randomNumber)")
+        
+        guard let url = urlComponents?.url else {
+            print("잘못된 URL")
+            return
+        }
+        
+        fetchData(url: url) { [weak self] (result: PokemonData?) in
+            guard let self, let result else { return }
+            
+            DispatchQueue.main.async {
+                self.profileImage.image = UIImage(named: result.sprites.front_default)
+            }
+        }
+    }
+    
 }
 
 extension PhoneBookViewController: UITextViewDelegate {
