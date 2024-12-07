@@ -119,7 +119,21 @@ class PhoneBookViewController: UIViewController {
         }
         
         let newPhoneBook = PhoneBook(name: name, phoneNumber: phoneNumber, image: imageData)
-        UserDefaults.standard.set(newPhoneBook, forKey: "phonebook")
+        
+        // 기존 데이터 가져오기
+        var phoneBooks = [PhoneBook]()
+        if let data = UserDefaults.standard.data(forKey: "PhoneBook"),
+           let decodedPhoneBooks = try? JSONDecoder().decode([PhoneBook].self, from: data) {
+            phoneBooks = decodedPhoneBooks
+        }
+        
+        // 새로운 데이터 추가
+        phoneBooks.append(newPhoneBook)
+        
+        // UserDefaults에 저장
+        if let encoded = try? JSONEncoder().encode(phoneBooks) {
+            UserDefaults.standard.set(encoded, forKey: "PhoneBook")
+        }
         
         // ViewController로 되돌아가기
         navigationController?.popViewController(animated: true)

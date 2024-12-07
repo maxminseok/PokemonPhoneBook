@@ -49,7 +49,7 @@ class ViewController: UIViewController {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.id)
         return tableView
     }()
-
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,4 +112,16 @@ extension ViewController: UITableViewDataSource {
     }
     
     
+}
+
+extension ViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // UserDefaults에서 데이터 다시 가져오기
+        if let data = UserDefaults.standard.data(forKey: "PhoneBook"),
+           let phonebooks = try? JSONDecoder().decode([PhoneBook].self, from: data) {
+            dataSource = phonebooks
+        }
+        friendsListTableView.reloadData()
+    }
 }
