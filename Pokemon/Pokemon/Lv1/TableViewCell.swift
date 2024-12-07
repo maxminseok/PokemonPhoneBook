@@ -71,7 +71,7 @@ final class TableViewCell: UITableViewCell {
     }
     
     public func configureCell(phoneBook: PhoneBook) {
-        profileImageView.image = UIImage(named: phoneBook.image)
+        profileImageView.image = UIImage(data: phoneBook.image)
         nameLabel.text = phoneBook.name
         phoneNumberLabel.text = phoneBook.phoneNumber
     }

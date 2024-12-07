@@ -109,7 +109,20 @@ class PhoneBookViewController: UIViewController {
     
     @objc
     private func applyButtonTapped() {
+        // 이름, 전화번호, 이미지 값 있는지 확인 후 phoneBook에다가 값 추가하기
+        guard let name = nameTextView.text, !name.isEmpty,
+              let phoneNumber = phoneNumberTextView.text, !phoneNumber.isEmpty,
+              let image = profileImage.image,
+              let imageData = image.pngData() else {    // image를 Data 타입으로 변환해야 userDefaults에 저장 가능해서 변환하는 작업
+            print("모든 필드를 채워주세요!")
+            return
+        }
         
+        let newPhoneBook = PhoneBook(name: name, phoneNumber: phoneNumber, image: imageData)
+        UserDefaults.standard.set(newPhoneBook, forKey: "phonebook")
+        
+        // ViewController로 되돌아가기
+        navigationController?.popViewController(animated: true)
     }
     
     @objc

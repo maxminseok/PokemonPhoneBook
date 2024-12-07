@@ -10,16 +10,18 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-    private var dataSource: [PhoneBook] = {
-        [
-            PhoneBook(name: "이름1", phoneNumber: "010-0000-0000", image: "이미지1"),
-            PhoneBook(name: "이름2", phoneNumber: "010-1111-1111", image: "이미지2"),
-            PhoneBook(name: "이름3", phoneNumber: "010-2222-2222", image: "이미지3"),
-            PhoneBook(name: "이름4", phoneNumber: "010-3333-3333", image: "이미지4"),
-            PhoneBook(name: "이름5", phoneNumber: "010-4444-4444", image: "이미지5"),
-            PhoneBook(name: "이름6", phoneNumber: "010-5555-5555", image: "이미지6")
-        ]
-    }()
+//    private var dataSource: [PhoneBook] = {
+//        [
+//            PhoneBook(name: "이름1", phoneNumber: "010-0000-0000", image: "이미지1"),
+//            PhoneBook(name: "이름2", phoneNumber: "010-1111-1111", image: "이미지2"),
+//            PhoneBook(name: "이름3", phoneNumber: "010-2222-2222", image: "이미지3"),
+//            PhoneBook(name: "이름4", phoneNumber: "010-3333-3333", image: "이미지4"),
+//            PhoneBook(name: "이름5", phoneNumber: "010-4444-4444", image: "이미지5"),
+//            PhoneBook(name: "이름6", phoneNumber: "010-5555-5555", image: "이미지6")
+//        ]
+//    }()
+    
+    private var dataSource = [PhoneBook]()
     
     private let titleLabel: UILabel = {
         let label = UILabel()

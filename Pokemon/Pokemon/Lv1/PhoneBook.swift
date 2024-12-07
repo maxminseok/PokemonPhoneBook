@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct PhoneBook {
+struct PhoneBook: Codable {
     let name: String
     let phoneNumber: String
-    let image: String
+    let image: Data
 }
 
 struct PokemonData: Codable {
