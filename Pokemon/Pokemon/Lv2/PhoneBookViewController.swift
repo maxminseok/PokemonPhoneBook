@@ -7,7 +7,27 @@
 
 import UIKit
 
+// 추가/수정을 위한 프로토콜
+protocol PhoneBookUpdateDelegate: AnyObject {
+    func didUpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int)
+    func didAddNewPhoneBook(_ newPhoneBook: PhoneBook)
+}
+
 class PhoneBookViewController: UIViewController {
+    
+    weak var delegate: PhoneBookUpdateDelegate?
+    
+    var isEditingMode: Bool = false // 수정일땐 true, 추가일 땐 false로 동작
+    var phoneBookIndex: Int?    // 수정할 데이터의 인덱스
+    var titleText = "연락처 추가"    // 추가 할 땐 "연락처 추가", 수정할 땐 해당 데이터 셀의 name으로 변경
+    
+    // 수정 시 UI에 셀 데이터 추가
+    func setFieldData(_ phoneBook: PhoneBook) {
+        profileImage.image = UIImage(data: phoneBook.image)
+        nameTextView.text = phoneBook.name
+        phoneNumberTextView.text = phoneBook.phoneNumber
+        titleText = phoneBook.name
+    }
     
     // 작성한 연락처 데이터를 추가시킬 적용 버튼
     private let applyButton: UIButton = {
@@ -42,7 +62,7 @@ class PhoneBookViewController: UIViewController {
     }()
     
     // 이름 입력 텍스트 뷰
-    private lazy var nameTextView: UITextView = {
+    private let nameTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .label
         textView.layer.borderColor = UIColor.systemGray.cgColor
@@ -52,7 +72,7 @@ class PhoneBookViewController: UIViewController {
     }()
     
     // 전화번호 입력 텍스트 뷰
-    private lazy var phoneNumberTextView: UITextView = {
+    private let phoneNumberTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .label
         textView.layer.borderColor = UIColor.systemGray.cgColor
@@ -78,7 +98,7 @@ class PhoneBookViewController: UIViewController {
             phoneNumberTextView
         ].forEach { view.addSubview($0) }
         
-        self.navigationItem.title = "연락처 추가"
+        self.navigationItem.title = titleText
         let rightItem = UIBarButtonItem(customView: applyButton)
         self.navigationItem.rightBarButtonItem = rightItem
         
@@ -108,45 +128,10 @@ class PhoneBookViewController: UIViewController {
         }
     }
     
-    // 적용 버튼 이벤트 처리
-    @objc
-    private func applyButtonTapped() {
-        // 이름, 전화번호, 이미지 값 있는지 확인 후 phoneBook에다가 값 추가하기
-        guard let name = nameTextView.text, !name.isEmpty,
-              let phoneNumber = phoneNumberTextView.text, !phoneNumber.isEmpty,
-              let image = profileImage.image,
-              let imageData = image.pngData() else {    // image를 Data 타입으로 변환해야 userDefaults에 저장 가능해서 변환하는 작업
-            print("모든 필드를 채워주세요!")
-            return
-        }
-        
-        let newPhoneBook = PhoneBook(name: name, phoneNumber: phoneNumber, image: imageData)
-        
-        // 기존 데이터 가져오기
-        var phoneBooks = [PhoneBook]()
-        if let data = UserDefaults.standard.data(forKey: "PhoneBook"),
-           let decodedPhoneBooks = try? JSONDecoder().decode([PhoneBook].self, from: data) {
-            phoneBooks = decodedPhoneBooks
-        }
-        
-        // 새로운 데이터 추가
-        phoneBooks.append(newPhoneBook)
-        
-        // UserDefaults에 저장
-        if let encoded = try? JSONEncoder().encode(phoneBooks) {
-            UserDefaults.standard.set(encoded, forKey: "PhoneBook")
-        }
-        
-        // ViewController로 되돌아가기
-        navigationController?.popViewController(animated: true)
-    }
-    
-    // 이미지 생성 버튼 이벤트 처리
-    @objc
-    private func createImageButtonTapped() {
-        fetchPoekemonImage()
-    }
-    
+}
+
+// 네트워크 통신 메서드
+extension PhoneBookViewController {
     // 서버 데이터를 불러오는 메서드
     private func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
         let session = URLSession(configuration: .default)
@@ -196,5 +181,42 @@ class PhoneBookViewController: UIViewController {
             }
         }
     }
+}
+
+// 버튼 클릭 이벤트 처리
+extension PhoneBookViewController {
+    // 적용 버튼 이벤트 처리
+    @objc
+    private func applyButtonTapped() {
+        // 이름, 전화번호, 이미지 값 있는지 확인 후 phoneBook에다가 값 추가하기
+        guard let name = nameTextView.text, !name.isEmpty,
+              let phoneNumber = phoneNumberTextView.text, !phoneNumber.isEmpty,
+              let image = profileImage.image,
+              let imageData = image.pngData() else {    // image를 Data 타입으로 변환해야 userDefaults에 저장 가능해서 변환하는 작업
+            print("모든 필드를 채워주세요!")
+            return
+        }
+        
+        let newPhoneBook = PhoneBook(name: name, phoneNumber: phoneNumber, image: imageData)
+        
+        if isEditingMode, let index = phoneBookIndex {
+            print("데이터 수정")
+            // 데이터 수정
+            delegate?.didUpdatePhoneBook(newPhoneBook, at: index)
+        }
+        else {
+            print("데이터 추가")
+            // 데이터 추가
+            delegate?.didAddNewPhoneBook(newPhoneBook)
+        }
+        
+        // ViewController로 되돌아가기
+        navigationController?.popViewController(animated: true)
+    }
     
+    // 이미지 생성 버튼 이벤트 처리
+    @objc
+    private func createImageButtonTapped() {
+        fetchPoekemonImage()
+    }
 }

@@ -42,18 +42,20 @@ class ViewController: UIViewController {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.id)
         return tableView
     }()
+    
+    private let deleteButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("삭제", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.black, for: .highlighted)
+        button.addTarget(self, action: #selector(resetDataButtonTapped), for: .touchUpInside)
+        return button
+    }()
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
-    }
-    
-    // 추가 버튼 이벤트 처리
-    // 버튼 클릭시 추가를 위한 화면으로 이동
-    @objc
-    private func addList() {
-        self.navigationController?.pushViewController(PhoneBookViewController(), animated: true)
     }
     
     // UI 구성
@@ -62,7 +64,8 @@ class ViewController: UIViewController {
         [
             titleLabel,
             addButton,
-            friendsListTableView
+            friendsListTableView,
+            deleteButton
         ].forEach { view.addSubview($0) }
         
         titleLabel.snp.makeConstraints{
@@ -81,15 +84,52 @@ class ViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
         }
+        
+        deleteButton.snp.makeConstraints{
+            $0.top.equalTo(titleLabel.snp.top)
+            $0.leading.equalToSuperview().inset(20)
+            $0.height.equalTo(titleLabel.snp.height)
+        }
     }
 
+}
 
+// 추가/삭제 버튼 이벤트 처리
+extension ViewController {
+    
+    // 버튼 클릭시 추가를 위한 화면으로 이동
+    @objc
+    private func addList() {
+        let phoneBookVC = PhoneBookViewController()
+        phoneBookVC.delegate = self
+        phoneBookVC.isEditingMode = false
+        self.navigationController?.pushViewController(phoneBookVC, animated: true)
+    }
+    
+    // 데이터 삭제
+    @objc func resetDataButtonTapped() {
+        UserDefaults.standard.removeObject(forKey: "PhoneBook")
+        dataSource.removeAll()
+        friendsListTableView.reloadData()
+        print("PhoneBook 데이터가 초기화되었습니다.")
+    }
 }
 
 // 테이블 뷰 Delegate 설정
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
+    }
+    
+    // 셀 클릭 시 호출되는 메서드
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell = dataSource[indexPath.row]
+        let phoneBookVC = PhoneBookViewController()
+        phoneBookVC.setFieldData(selectedCell)
+        phoneBookVC.delegate = self
+        phoneBookVC.isEditingMode = true
+        phoneBookVC.phoneBookIndex = indexPath.row
+        self.navigationController?.pushViewController(phoneBookVC, animated: true)
     }
     
 }
@@ -123,6 +163,29 @@ extension ViewController {
             let sortedPhoneBooks = phonebooks.sorted { $0.name < $1.name }
             dataSource = sortedPhoneBooks
         }
+        friendsListTableView.reloadData()
+    }
+}
+
+// 데이터 추가/수정 메서드 구현
+extension ViewController: PhoneBookUpdateDelegate {
+    func didUpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int) {
+        dataSource[index] = updatedPhoneBook
+        
+        if let encoded = try? JSONEncoder().encode(dataSource) {
+            UserDefaults.standard.set(encoded, forKey: "PhoneBook")
+        }
+        
+        friendsListTableView.reloadData()
+    }
+    
+    func didAddNewPhoneBook(_ newPhoneBook: PhoneBook) {
+        dataSource.append(newPhoneBook)
+        
+        if let encoded = try? JSONEncoder().encode(dataSource) {
+            UserDefaults.standard.set(encoded, forKey: "PhoneBook")
+        }
+        
         friendsListTableView.reloadData()
     }
 }

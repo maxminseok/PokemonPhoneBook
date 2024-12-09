@@ -29,6 +29,7 @@ final class TableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .systemBackground
+        imageView.clipsToBounds = true  // 이미지가 틀을 벗어나면 잘리도록 추가
         imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 2
         imageView.layer.cornerRadius = 30
