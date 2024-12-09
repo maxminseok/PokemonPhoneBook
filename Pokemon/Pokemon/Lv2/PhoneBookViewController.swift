@@ -44,24 +44,20 @@ class PhoneBookViewController: UIViewController {
     // 이름 입력 텍스트 뷰
     private lazy var nameTextView: UITextView = {
         let textView = UITextView()
-        textView.text = "이름 입력"
-        textView.textColor = .secondaryLabel
+        textView.textColor = .label
         textView.layer.borderColor = UIColor.systemGray.cgColor
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 10
-        textView.delegate = self
         return textView
     }()
     
     // 전화번호 입력 텍스트 뷰
     private lazy var phoneNumberTextView: UITextView = {
         let textView = UITextView()
-        textView.text = "전화번호 입력"
-        textView.textColor = .secondaryLabel
+        textView.textColor = .label
         textView.layer.borderColor = UIColor.systemGray.cgColor
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 10
-        textView.delegate = self
         return textView
     }()
     
@@ -201,14 +197,4 @@ class PhoneBookViewController: UIViewController {
         }
     }
     
-    
-}
-
-// 텍스트뷰 delegate 설정
-extension PhoneBookViewController: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        guard textView.textColor == .secondaryLabel else { return }
-        textView.text = nil
-        textView.textColor = .label
-    }
 }
