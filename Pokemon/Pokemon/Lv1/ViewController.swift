@@ -119,7 +119,9 @@ extension ViewController {
         // UserDefaults에서 데이터 다시 가져오기
         if let data = UserDefaults.standard.data(forKey: "PhoneBook"),
            let phonebooks = try? JSONDecoder().decode([PhoneBook].self, from: data) {
-            dataSource = phonebooks
+            // 알파벳 순으로 정렬
+            let sortedPhoneBooks = phonebooks.sorted { $0.name < $1.name }
+            dataSource = sortedPhoneBooks
         }
         friendsListTableView.reloadData()
     }
