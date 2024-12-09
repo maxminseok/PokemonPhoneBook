@@ -10,6 +10,8 @@ import SnapKit
 
 class ViewController: UIViewController {
     
+    private let margin = Margin()
+    
     // 연락처 데이터
     private var dataSource = [PhoneBook]()
     
@@ -69,25 +71,25 @@ class ViewController: UIViewController {
         ].forEach { view.addSubview($0) }
         
         titleLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(80)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.centerX.equalToSuperview()
         }
         
         addButton.snp.makeConstraints{
             $0.top.equalTo(titleLabel.snp.top)
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(margin.sideMargin)
             $0.height.equalTo(titleLabel.snp.height)
         }
         
         friendsListTableView.snp.makeConstraints{
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(40)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(margin.topMargin)
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(margin.sideMargin)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
         deleteButton.snp.makeConstraints{
             $0.top.equalTo(titleLabel.snp.top)
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(margin.sideMargin)
             $0.height.equalTo(titleLabel.snp.height)
         }
     }
@@ -148,8 +150,6 @@ extension ViewController: UITableViewDataSource {
         cell.configureCell(phoneBook: dataSource[indexPath.row])
         return cell
     }
-    
-    
 }
 
 // 테이블 뷰 reload 설정

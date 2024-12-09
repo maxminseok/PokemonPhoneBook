@@ -15,6 +15,8 @@ protocol PhoneBookUpdateDelegate: AnyObject {
 
 class PhoneBookViewController: UIViewController {
     
+    private let margin = Margin()
+    
     weak var delegate: PhoneBookUpdateDelegate?
     
     var isEditingMode: Bool = false // 수정일땐 true, 추가일 땐 false로 동작
@@ -65,6 +67,7 @@ class PhoneBookViewController: UIViewController {
     private let nameTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .label
+        textView.font = .systemFont(ofSize: 18)
         textView.layer.borderColor = UIColor.systemGray.cgColor
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 10
@@ -75,6 +78,7 @@ class PhoneBookViewController: UIViewController {
     private let phoneNumberTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .label
+        textView.font = .systemFont(ofSize: 18)
         textView.layer.borderColor = UIColor.systemGray.cgColor
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 10
@@ -103,27 +107,27 @@ class PhoneBookViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = rightItem
         
         profileImage.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(120)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(margin.topMargin)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(160)
         }
         
         createImageButton.snp.makeConstraints{
-            $0.top.equalTo(profileImage.snp.bottom).offset(20)
+            $0.top.equalTo(profileImage.snp.bottom).offset(margin.halfTopMargin)
             $0.centerX.equalToSuperview()
         }
         
         nameTextView.snp.makeConstraints{
-            $0.top.equalTo(createImageButton.snp.bottom).offset(20)
+            $0.top.equalTo(createImageButton.snp.bottom).offset(margin.halfTopMargin)
             $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(margin.sideMargin)
             $0.height.equalTo(40)
         }
         
         phoneNumberTextView.snp.makeConstraints{
-            $0.top.equalTo(nameTextView.snp.bottom).offset(10)
+            $0.top.equalTo(nameTextView.snp.bottom).offset(margin.quarterTopMargin)
             $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(margin.sideMargin)
             $0.height.equalTo(40)
         }
     }
