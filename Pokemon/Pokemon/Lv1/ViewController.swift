@@ -10,19 +10,10 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-//    private var dataSource: [PhoneBook] = {
-//        [
-//            PhoneBook(name: "이름1", phoneNumber: "010-0000-0000", image: "이미지1"),
-//            PhoneBook(name: "이름2", phoneNumber: "010-1111-1111", image: "이미지2"),
-//            PhoneBook(name: "이름3", phoneNumber: "010-2222-2222", image: "이미지3"),
-//            PhoneBook(name: "이름4", phoneNumber: "010-3333-3333", image: "이미지4"),
-//            PhoneBook(name: "이름5", phoneNumber: "010-4444-4444", image: "이미지5"),
-//            PhoneBook(name: "이름6", phoneNumber: "010-5555-5555", image: "이미지6")
-//        ]
-//    }()
-    
+    // 연락처 데이터
     private var dataSource = [PhoneBook]()
     
+    // 첫 화면 타이틀 레이블
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "친구 목록"
@@ -31,6 +22,7 @@ class ViewController: UIViewController {
         return label
     }()
     
+    // 다음 화면으로 넘어가기 위한 버튼
     private let addButton: UIButton = {
         let button = UIButton()
         button.setTitle("추가", for: .normal)
@@ -40,6 +32,7 @@ class ViewController: UIViewController {
         return button
     }()
     
+    // 연락처 데이터를 띄울 테이블 뷰
     private lazy var friendsListTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
@@ -56,11 +49,14 @@ class ViewController: UIViewController {
         configureUI()
     }
     
+    // 추가 버튼 이벤트 처리
+    // 버튼 클릭시 추가를 위한 화면으로 이동
     @objc
     private func addList() {
         self.navigationController?.pushViewController(PhoneBookViewController(), animated: true)
     }
     
+    // UI 구성
     private func configureUI() {
         view.backgroundColor = .systemBackground
         [
@@ -90,6 +86,7 @@ class ViewController: UIViewController {
 
 }
 
+// 테이블 뷰 Delegate 설정
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
@@ -97,6 +94,7 @@ extension ViewController: UITableViewDelegate {
     
 }
 
+// 테이블 뷰 dataSource 설정
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataSource.count
@@ -114,6 +112,7 @@ extension ViewController: UITableViewDataSource {
     
 }
 
+// 테이블 뷰 reload 설정
 extension ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

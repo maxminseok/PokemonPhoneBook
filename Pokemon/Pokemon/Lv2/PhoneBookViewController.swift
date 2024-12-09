@@ -9,6 +9,7 @@ import UIKit
 
 class PhoneBookViewController: UIViewController {
     
+    // 작성한 연락처 데이터를 추가시킬 적용 버튼
     private let applyButton: UIButton = {
         let button = UIButton()
         button.setTitle("적용", for: .normal)
@@ -18,6 +19,7 @@ class PhoneBookViewController: UIViewController {
         return button
     }()
     
+    // 프로필 이미지 뷰
     private let profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -29,6 +31,7 @@ class PhoneBookViewController: UIViewController {
         return imageView
     }()
     
+    // 랜덤 이미지 생성 버튼
     private let createImageButton: UIButton = {
         let button = UIButton()
         button.setTitle("랜덤 이미지 생성", for: .normal)
@@ -38,6 +41,7 @@ class PhoneBookViewController: UIViewController {
         return button
     }()
     
+    // 이름 입력 텍스트 뷰
     private lazy var nameTextView: UITextView = {
         let textView = UITextView()
         textView.text = "이름 입력"
@@ -49,6 +53,7 @@ class PhoneBookViewController: UIViewController {
         return textView
     }()
     
+    // 전화번호 입력 텍스트 뷰
     private lazy var phoneNumberTextView: UITextView = {
         let textView = UITextView()
         textView.text = "전화번호 입력"
@@ -66,7 +71,7 @@ class PhoneBookViewController: UIViewController {
         configureUI()
     }
     
-    
+    // UI 구성
     private func configureUI() {
         view.backgroundColor = .systemBackground
         [
@@ -107,6 +112,7 @@ class PhoneBookViewController: UIViewController {
         }
     }
     
+    // 적용 버튼 이벤트 처리
     @objc
     private func applyButtonTapped() {
         // 이름, 전화번호, 이미지 값 있는지 확인 후 phoneBook에다가 값 추가하기
@@ -139,6 +145,7 @@ class PhoneBookViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    // 이미지 생성 버튼 이벤트 처리
     @objc
     private func createImageButtonTapped() {
         fetchPoekemonImage()
@@ -197,7 +204,7 @@ class PhoneBookViewController: UIViewController {
     
 }
 
-
+// 텍스트뷰 delegate 설정
 extension PhoneBookViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         guard textView.textColor == .secondaryLabel else { return }
