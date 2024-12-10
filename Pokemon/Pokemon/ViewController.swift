@@ -169,7 +169,7 @@ extension ViewController {
 
 // 데이터 추가/수정 메서드 구현
 extension ViewController: PhoneBookUpdateDelegate {
-    func didUpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int) {
+    func UpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int) {
         dataSource[index] = updatedPhoneBook
         
         if let encoded = try? JSONEncoder().encode(dataSource) {
@@ -179,7 +179,7 @@ extension ViewController: PhoneBookUpdateDelegate {
         friendsListTableView.reloadData()
     }
     
-    func didAddNewPhoneBook(_ newPhoneBook: PhoneBook) {
+    func AddNewPhoneBook(_ newPhoneBook: PhoneBook) {
         dataSource.append(newPhoneBook)
         
         if let encoded = try? JSONEncoder().encode(dataSource) {

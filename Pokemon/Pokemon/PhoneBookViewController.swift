@@ -9,8 +9,8 @@ import UIKit
 
 // 추가/수정을 위한 프로토콜
 protocol PhoneBookUpdateDelegate: AnyObject {
-    func didUpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int)
-    func didAddNewPhoneBook(_ newPhoneBook: PhoneBook)
+    func UpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int)
+    func AddNewPhoneBook(_ newPhoneBook: PhoneBook)
 }
 
 class PhoneBookViewController: UIViewController {
@@ -42,14 +42,14 @@ class PhoneBookViewController: UIViewController {
     }()
     
     // 프로필 이미지 뷰
-    private let profileImage: UIImageView = {
+    private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true  // 이미지가 틀을 벗어나면 잘리도록 추가
         imageView.backgroundColor = .systemBackground
         imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 2
-        imageView.layer.cornerRadius = 80
+        imageView.layer.cornerRadius = margin.profileImageSize/2
         return imageView
     }()
     
@@ -87,7 +87,7 @@ class PhoneBookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        nameTextView.becomeFirstResponder()
         configureUI()
     }
     
@@ -109,7 +109,7 @@ class PhoneBookViewController: UIViewController {
         profileImage.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(margin.topMargin)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(160)
+            $0.width.height.equalTo(margin.profileImageSize)
         }
         
         createImageButton.snp.makeConstraints{
@@ -121,14 +121,14 @@ class PhoneBookViewController: UIViewController {
             $0.top.equalTo(createImageButton.snp.bottom).offset(margin.halfTopMargin)
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(margin.sideMargin)
-            $0.height.equalTo(40)
+            $0.height.equalTo(margin.profileImageSize/4)
         }
         
         phoneNumberTextView.snp.makeConstraints{
             $0.top.equalTo(nameTextView.snp.bottom).offset(margin.quarterTopMargin)
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(margin.sideMargin)
-            $0.height.equalTo(40)
+            $0.height.equalTo(margin.profileImageSize/4)
         }
     }
     
@@ -206,12 +206,12 @@ extension PhoneBookViewController {
         if isEditingMode, let index = phoneBookIndex {
             print("데이터 수정")
             // 데이터 수정
-            delegate?.didUpdatePhoneBook(newPhoneBook, at: index)
+            delegate?.UpdatePhoneBook(newPhoneBook, at: index)
         }
         else {
             print("데이터 추가")
             // 데이터 추가
-            delegate?.didAddNewPhoneBook(newPhoneBook)
+            delegate?.AddNewPhoneBook(newPhoneBook)
         }
         
         // ViewController로 되돌아가기

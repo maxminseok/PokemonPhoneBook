@@ -8,6 +8,8 @@
 import UIKit
 
 struct Margin {
+    // 16 Pro 402 / 874 = 2.17
+    // se3 375 / 667 = 1.77
     var heightRatio: CGFloat {
         UIScreen.main.bounds.height / 812
     }
@@ -29,9 +31,8 @@ struct Margin {
     var quarterTopMargin: CGFloat {
         topMargin / 4
     }
-}
-
-struct FontSize {
-    var titleSize = 20
-    var textSize = 18
+    
+    var profileImageSize: CGFloat {
+        widthRatio * 160
+    }
 }
