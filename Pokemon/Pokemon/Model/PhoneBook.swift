@@ -12,15 +12,3 @@ struct PhoneBook: Codable {
     let phoneNumber: String
     let image: Data
 }
-
-struct PokemonData: Codable {
-    let id: Int
-    let name: String
-    let height: Int
-    let weight: Int
-    let sprites: UrlImage
-}
-
-struct UrlImage: Codable {
-    let front_default: String
-}
