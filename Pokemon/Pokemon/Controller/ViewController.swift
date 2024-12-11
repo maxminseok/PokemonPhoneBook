@@ -163,6 +163,11 @@ extension ViewController: PhoneBookEditDelegate {
     
     func DeletePhoneBook(at index: Int) {
         dataSource.remove(at: index)
+        
+        if let encoded = try? JSONEncoder().encode(dataSource) {
+            UserDefaults.standard.set(encoded, forKey: "PhoneBook")
+        }
+        
         mainView.reloadTableView()
     }
 }
