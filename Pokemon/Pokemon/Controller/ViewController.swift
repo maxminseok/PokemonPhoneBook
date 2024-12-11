@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     
     // mainView 로드
     override func loadView() {
-        view = mainView
+        self.view = mainView
     }
         
     override func viewDidLoad() {
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     private func setNavigationBar() {
         navigationItem.title = "친구 목록"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addList))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(resetDataButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(handleDelete))
     }
 
 }
@@ -51,7 +51,7 @@ extension ViewController {
         UserDefaults.standard.removeObject(forKey: "PhoneBook")
         dataSource.removeAll()
         mainView.friendsListTableView.reloadData()
-        print("PhoneBook 데이터가 초기화되었습니다.")
+        handleConfirm()
     }
 }
 
@@ -125,5 +125,42 @@ extension ViewController: UITableViewDataSource {
         
         cell.configureCell(phoneBook: dataSource[indexPath.row])
         return cell
+    }
+}
+
+// Alert 설정
+extension ViewController {
+    // 삭제 확인 안내 Alert
+    @objc private func handleDelete() {
+        let alert = UIAlertController(
+            title: "삭제",
+            message: "연락처를 전부 삭제할까요?",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+            self.resetDataButtonTapped()
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // 삭제 완료 안내 Alert
+    @objc private func handleConfirm() {
+        let alert = UIAlertController(
+            title: "안내",
+            message: "모든 연락처가 삭제 되었습니다.",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+        alert.addAction(confirmAction)
+        
+        present(alert, animated: true, completion: nil)
     }
 }

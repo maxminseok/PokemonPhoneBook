@@ -25,7 +25,7 @@ class PhoneBookViewController: UIViewController {
     
     // EditView 로드
     override func loadView() {
-        view = editView
+        self.view = editView
     }
     
     override func viewDidLoad() {
