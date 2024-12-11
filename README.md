@@ -25,8 +25,8 @@
 ---
 
 # 🎬 앱 미리보기
-![앱 프리뷰](https://github.com/user-attachments/assets/80315098-7608-49d4-b851-c08737070c7d)
-
+<p align="center"><img src="https://github.com/user-attachments/assets/b4699f95-6253-4f27-a6f7-738d2bc7fa4f" width="40%" height="40%"></P>
+<p align="center"><img src="https://github.com/user-attachments/assets/b08bcf89-1c78-4abf-8a45-947b2caa9f76" width="40%" height="40%"></P>
 ---
 
 # 🔎 파일 구성
