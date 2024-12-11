@@ -25,10 +25,8 @@
 ---
 
 # 🎬 앱 미리보기
-<p align="center"><img src="https://github.com/user-attachments/assets/b4699f95-6253-4f27-a6f7-738d2bc7fa4f" width="40%" height="40%"></P>
-<p align="center"><img src="https://github.com/user-attachments/assets/b08bcf89-1c78-4abf-8a45-947b2caa9f76" width="40%" height="40%"></P>
-<figure class="half">  <a href="link"><img src="https://github.com/user-attachments/assets/b4699f95-6253-4f27-a6f7-738d2bc7fa4f"></a>  <a href="link"><img src="https://github.com/user-attachments/assets/b08bcf89-1c78-4abf-8a45-947b2caa9f76"></a>  <figcaption>2개이미지.</figcaption></figure>
-
+<p align="left"><img src="https://github.com/user-attachments/assets/b4699f95-6253-4f27-a6f7-738d2bc7fa4f" width="40%" height="40%"></P>
+<p align="right"><img src="https://github.com/user-attachments/assets/b08bcf89-1c78-4abf-8a45-947b2caa9f76" width="40%" height="40%"></P>
 
 ---
 
