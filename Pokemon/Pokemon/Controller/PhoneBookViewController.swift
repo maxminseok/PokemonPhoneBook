@@ -16,6 +16,7 @@ protocol PhoneBookUpdateDelegate: AnyObject {
 class PhoneBookViewController: UIViewController {
 
     private let editView: EditView = .init()
+    private let fetchPokemonImage = FetchPokemonImage()
     weak var delegate: PhoneBookUpdateDelegate?
     
     var isEditingMode: Bool = false // 수정일땐 true, 추가일 땐 false로 동작
@@ -36,7 +37,7 @@ class PhoneBookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        editView.delegate = self
         setNavigationBar()
     }
     
@@ -48,10 +49,9 @@ class PhoneBookViewController: UIViewController {
 }
 
 // 버튼 클릭 이벤트 처리
-extension PhoneBookViewController {
+extension PhoneBookViewController: EditViewDelegate {
     // 적용 버튼 이벤트 처리
-    @objc
-    private func applyButtonTapped() {
+    @objc private func applyButtonTapped() {
         // 이름, 전화번호, 이미지 값 있는지 확인 후 phoneBook에다가 값 추가하기
         guard let name = editView.nameTextView.text, !name.isEmpty,
               let phoneNumber = editView.phoneNumberTextView.text, !phoneNumber.isEmpty,
@@ -79,17 +79,24 @@ extension PhoneBookViewController {
     }
     
     // 이미지 생성 버튼 이벤트 처리
-    @objc
-    private func createImageButtonTapped() {
-        PhoneBookService.shared.fetchPokemonImage { [weak self] image in
-            guard let self else { return }
+    @objc func didTapCreateImageButton() {
+        let randomNumber = Int.random(in: 1...1000)
+        let urlComponents = URLComponents(string: "https://pokeapi.co/api/v2/pokemon/"+"\(randomNumber)")
+        
+        guard let url = urlComponents?.url else {
+            print("잘못된 URL")
+            return
+        }
+        
+        fetchPokemonImage.fetchData(url: url) { [weak self] (result: PokemonData?) in
+            guard let self, let result else { return }
             
-            DispatchQueue.main.async {
-                if let image {
-                    self.editView.profileImage.image = image
-                }
-                else {
-                    print("이미지 불러오기 실패")
+            guard let imageUrl = URL(string: result.sprites.front_default) else { return }
+            if let imageData = try? Data(contentsOf: imageUrl) {
+                if let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.editView.profileImage.image = image
+                    }
                 }
             }
         }

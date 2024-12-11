@@ -8,9 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol EditViewDelegate: AnyObject {
+    func didTapCreateImageButton()
+}
+
 class EditView: UIView {
     
     private let margin = Margin()
+    weak var delegate: EditViewDelegate?
     
     // 프로필 이미지 뷰
     lazy var profileImage: UIImageView = {
@@ -101,6 +106,11 @@ class EditView: UIView {
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(margin.sideMargin)
             $0.height.equalTo(margin.profileImageSize/4)
         }
+    }
+    
+    // 이미지 생성 버튼 핸들러 위임
+    @objc private func createImageButtonTapped() {
+        delegate?.didTapCreateImageButton()
     }
     
 }

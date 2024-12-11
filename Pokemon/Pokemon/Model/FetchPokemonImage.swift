@@ -19,19 +19,9 @@ struct UrlImage: Codable {
     let front_default: String
 }
 
-class PhoneBookService {
-    static let shared = PhoneBookService()
-    private init() {}
-    
-    func fetchPokemonImage(completion: @escaping (UIImage?) -> Void) {
-        let randomNumber = Int.random(in: 1...1000)
-        let urlComponents = URLComponents(string: "https://pokeapi.co/api/v2/pokemon/"+"\(randomNumber)")
-        
-        guard let url = urlComponents?.url else {
-            print("잘못된 URL")
-            return
-        }
-        
+class FetchPokemonImage {
+    // 서버 데이터를 불러오는 메서드
+    func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
         let session = URLSession(configuration: .default)
         session.dataTask(with: URLRequest(url: url)) { data, response, error in
             guard let data, error == nil else {
@@ -42,16 +32,12 @@ class PhoneBookService {
             
             let suceessRange = 200..<300
             if let response = response as? HTTPURLResponse, suceessRange.contains(response.statusCode) {
-                if let result = try? JSONDecoder().decode(PokemonData.self, from: data),
-                   let imageUrl = URL(string: result.sprites.front_default),
-                   let imageData = try? Data(contentsOf: imageUrl),
-                   let image = UIImage(data: imageData) {
-                    completion(image)
-                }
-                else {
-                    print("이미지 디코딩 실패")
+                guard let decodeData = try? JSONDecoder().decode(T.self, from: data) else {
+                    print("JSON 디코딩 실패")
                     completion(nil)
+                    return
                 }
+                completion(decodeData)
             }
             else {
                 print("응답 오류")
