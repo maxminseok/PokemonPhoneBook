@@ -8,13 +8,11 @@
 import UIKit
 
 struct Margin {
-    // 16 Pro 402 / 874 = 2.17
-    // se3 375 / 667 = 1.77
     var heightRatio: CGFloat {
-        UIScreen.main.bounds.height / 812
+        UIScreen.main.bounds.height / 874
     }
     var widthRatio: CGFloat {
-        UIScreen.main.bounds.width / 375
+        UIScreen.main.bounds.width / 402
     }
     
     var sideMargin: CGFloat {
