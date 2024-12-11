@@ -19,7 +19,7 @@ struct UrlImage: Codable {
     let front_default: String
 }
 
-class FetchPokemonImage {
+class NetworkManager {
     // 서버 데이터를 불러오는 메서드
     func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
         let session = URLSession(configuration: .default)

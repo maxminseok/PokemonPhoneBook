@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MainView의 테이블 뷰 설정을 위임 받기
+        // MainView의 테이블 뷰 설정을 위한 위임
         mainView.setTableViewDelegate(delegate: self, dataSource: self)
         
         setNavigationBar()
@@ -66,6 +66,7 @@ extension ViewController {
             let sortedPhoneBooks = phonebooks.sorted { $0.name < $1.name }
             dataSource = sortedPhoneBooks
         }
+        
         mainView.reloadTableView()
     }
 }
@@ -109,7 +110,6 @@ extension ViewController: UITableViewDelegate {
         phoneBookVC.phoneBookIndex = indexPath.row
         self.navigationController?.pushViewController(phoneBookVC, animated: true)
     }
-    
 }
 
 // 테이블 뷰 dataSource 설정
