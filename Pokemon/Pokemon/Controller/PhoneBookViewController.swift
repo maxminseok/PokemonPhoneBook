@@ -8,8 +8,8 @@
 import UIKit
 
 // 추가, 수정, 삭제를 위한 프로토콜
-protocol PhoneBookUpdateDelegate: AnyObject {
-    func UpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int)
+protocol PhoneBookEditDelegate: AnyObject {
+    func EditPhoneBook(_ editedPhoneBook: PhoneBook, at index: Int)
     func AddNewPhoneBook(_ newPhoneBook: PhoneBook)
     func DeletePhoneBook(at index: Int)
 }
@@ -18,7 +18,7 @@ class PhoneBookViewController: UIViewController {
 
     private let editView: EditView = .init()
     private let networkManager = NetworkManager()
-    weak var delegate: PhoneBookUpdateDelegate?
+    weak var delegate: PhoneBookEditDelegate?
     
     var isEditingMode: Bool = false // 수정일 땐 true, 추가일 땐 false로 동작
     var phoneBookIndex: Int?    // 수정할 데이터의 인덱스
@@ -53,14 +53,44 @@ class PhoneBookViewController: UIViewController {
 
 // 버튼 클릭 이벤트 처리
 extension PhoneBookViewController: EditViewDelegate {
+    
+    // 등록 확인 안내 Alert
+    @objc private func handleApply() {
+        let alert = UIAlertController(
+            title: "적용",
+            message: "작성 내용을 등록할까요?",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "등록", style: .default) { _ in
+            self.applyButtonTapped()
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     // 적용 버튼 이벤트 처리
-    @objc private func applyButtonTapped() {
+    private func applyButtonTapped() {
         // 이름, 전화번호, 이미지 값 있는지 확인 후 phoneBook에다가 값 추가하기
         guard let name = editView.nameTextView.text, !name.isEmpty,
               let phoneNumber = editView.phoneNumberTextView.text, !phoneNumber.isEmpty,
               let image = editView.profileImage.image,
               let imageData = image.pngData() else {    // image를 Data 타입으로 변환해야 userDefaults에 저장 가능해서 변환하는 작업
-            hanleEmpty()
+            let alert = UIAlertController(
+                title: "안내",
+                message: "모든 필드를 채워주세요!",
+                preferredStyle: .alert
+            )
+            
+            let confirmAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+            alert.addAction(confirmAction)
+            
+            present(alert, animated: true, completion: nil)
             return
         }
         
@@ -68,7 +98,7 @@ extension PhoneBookViewController: EditViewDelegate {
         
         if isEditingMode, let index = phoneBookIndex {
             // 데이터 수정
-            delegate?.UpdatePhoneBook(newPhoneBook, at: index)
+            delegate?.EditPhoneBook(newPhoneBook, at: index)
         }
         else {
             // 데이터 추가
@@ -103,6 +133,7 @@ extension PhoneBookViewController: EditViewDelegate {
         }
     }
     
+    // 삭제 버튼 이벤트 처리
     func didTapDeleteButton() {
         guard isEditingMode, let index = phoneBookIndex else { return }
         
@@ -122,43 +153,4 @@ extension PhoneBookViewController: EditViewDelegate {
         
         present(alert, animated: true, completion: nil)
     }
-}
-
-// Alert 설정
-extension PhoneBookViewController {
-    // 등록 확인 안내 Alert
-    @objc private func handleApply() {
-        let alert = UIAlertController(
-            title: "적용",
-            message: "작성 내용을 등록할까요?",
-            preferredStyle: .alert
-        )
-        
-        let confirmAction = UIAlertAction(title: "등록", style: .default) { _ in
-            self.applyButtonTapped()
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    // 필드가 비어있을 때 뜨는 안내 Alert
-    private func hanleEmpty() {
-        let alert = UIAlertController(
-            title: "안내",
-            message: "모든 필드를 채워주세요!",
-            preferredStyle: .alert
-        )
-        
-        let confirmAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
-        alert.addAction(confirmAction)
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    
 }
