@@ -54,7 +54,7 @@ extension ViewController {
             preferredStyle: .alert
         )
         
-        let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+        let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
             self.resetDataButtonTapped()
         }
         

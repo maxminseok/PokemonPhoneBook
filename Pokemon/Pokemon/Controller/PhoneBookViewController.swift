@@ -144,7 +144,20 @@ extension PhoneBookViewController: EditViewDelegate {
         )
         let confirmAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
             self.delegate?.DeletePhoneBook(at: index)
-            self.navigationController?.popViewController(animated: true)
+            let alert = UIAlertController(
+                title: "안내",
+                message: "연락처가 삭제 되었습니다.",
+                preferredStyle: .alert
+            )
+            
+            let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(confirmAction)
+            
+            self.present(alert, animated: true, completion: nil)
+            
+            
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
