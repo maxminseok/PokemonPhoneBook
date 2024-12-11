@@ -7,10 +7,11 @@
 
 import UIKit
 
-// 추가/수정을 위한 프로토콜
+// 추가, 수정, 삭제를 위한 프로토콜
 protocol PhoneBookUpdateDelegate: AnyObject {
     func UpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int)
     func AddNewPhoneBook(_ newPhoneBook: PhoneBook)
+    func DeletePhoneBook(at index: Int)
 }
 
 class PhoneBookViewController: UIViewController {
@@ -31,6 +32,7 @@ class PhoneBookViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         editView.delegate = self    // EditView의 이미지 생성 버튼 이벤트 처리를 위한 위임
+        editView.setDeleteButtonHidden(!isEditingMode) // 연락처 수정일때만 삭제 버튼 보이기
         setNavigationBar()
     }
     
@@ -78,7 +80,7 @@ extension PhoneBookViewController: EditViewDelegate {
     }
     
     // 이미지 생성 버튼 이벤트 처리
-    @objc func didTapCreateImageButton() {
+    func didTapCreateImageButton() {
         let randomNumber = Int.random(in: 1...1000)
         let urlComponents = URLComponents(string: "https://pokeapi.co/api/v2/pokemon/"+"\(randomNumber)")
         
@@ -99,6 +101,26 @@ extension PhoneBookViewController: EditViewDelegate {
                 }
             }
         }
+    }
+    
+    func didTapDeleteButton() {
+        guard isEditingMode, let index = phoneBookIndex else { return }
+        
+        let alert = UIAlertController(
+            title: "삭제",
+            message: "정말로 이 연락처를 삭제하시겠습니까?",
+            preferredStyle: .alert
+        )
+        let confirmAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            self.delegate?.DeletePhoneBook(at: index)
+            self.navigationController?.popViewController(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -125,7 +147,7 @@ extension PhoneBookViewController {
     }
     
     // 필드가 비어있을 때 뜨는 안내 Alert
-    @objc private func hanleEmpty() {
+    private func hanleEmpty() {
         let alert = UIAlertController(
             title: "안내",
             message: "모든 필드를 채워주세요!",
@@ -137,4 +159,6 @@ extension PhoneBookViewController {
         
         present(alert, animated: true, completion: nil)
     }
+    
+    
 }

@@ -10,6 +10,7 @@ import SnapKit
 
 protocol EditViewDelegate: AnyObject {
     func didTapCreateImageButton()
+    func didTapDeleteButton()
 }
 
 class EditView: UIView {
@@ -61,6 +62,18 @@ class EditView: UIView {
         return textView
     }()
     
+    // 해당 연락처 삭제 버튼
+    lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("삭제", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .highlighted)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -79,7 +92,8 @@ class EditView: UIView {
             profileImage,
             createImageButton,
             nameTextView,
-            phoneNumberTextView
+            phoneNumberTextView,
+            deleteButton
         ].forEach { addSubview($0) }
         
         profileImage.snp.makeConstraints{
@@ -106,11 +120,26 @@ class EditView: UIView {
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(margin.sideMargin)
             $0.height.equalTo(margin.profileImageSize/4)
         }
+        
+        deleteButton.snp.makeConstraints{
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(margin.sideMargin)
+            $0.top.equalTo(phoneNumberTextView.snp.bottom).offset(margin.topMargin)
+            $0.height.equalTo(margin.profileImageSize/4)
+        }
     }
     
     // 이미지 생성 버튼 핸들러 위임
     @objc private func createImageButtonTapped() {
         delegate?.didTapCreateImageButton()
+    }
+    
+    @objc private func deleteButtonTapped() {
+        delegate?.didTapDeleteButton()
+    }
+    
+    // 삭제 버튼 숨김 설정(수정일때만 보이게 하기)
+    func setDeleteButtonHidden(_ isHidden: Bool) {
+        deleteButton.isHidden = isHidden
     }
     
 }

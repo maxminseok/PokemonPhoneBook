@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     // 네비게이션 바 설정
     private func setNavigationBar() {
         navigationItem.title = "친구 목록"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addList))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(handleDelete))
     }
 
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
 // 추가/삭제 버튼 이벤트 처리
 extension ViewController {
     // 버튼 클릭시 추가를 위한 화면으로 이동
-    @objc private func addList() {
+    @objc private func addButtonTapped() {
         let phoneBookVC = PhoneBookViewController()
         phoneBookVC.delegate = self
         phoneBookVC.isEditingMode = false
@@ -71,7 +71,7 @@ extension ViewController {
     }
 }
 
-// 데이터 추가/수정 메서드 구현
+// 데이터 추가, 수정, 삭제 메서드 구현
 extension ViewController: PhoneBookUpdateDelegate {
     func UpdatePhoneBook(_ updatedPhoneBook: PhoneBook, at index: Int) {
         dataSource[index] = updatedPhoneBook
@@ -90,6 +90,11 @@ extension ViewController: PhoneBookUpdateDelegate {
             UserDefaults.standard.set(encoded, forKey: "PhoneBook")
         }
         
+        mainView.reloadTableView()
+    }
+    
+    func DeletePhoneBook(at index: Int) {
+        dataSource.remove(at: index)
         mainView.reloadTableView()
     }
 }
