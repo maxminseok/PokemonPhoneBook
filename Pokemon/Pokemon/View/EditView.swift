@@ -8,12 +8,6 @@
 import UIKit
 import SnapKit
 
-/// 이미지 생성과 삭제 버튼 처리를 위한 프로토콜
-protocol EditViewDelegate: AnyObject {
-    func didTapCreateImageButton()
-    func didTapDeleteButton()
-}
-
 class EditView: UIView {
     
     private let margin = Margin()

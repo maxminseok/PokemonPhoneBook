@@ -7,23 +7,6 @@
 
 import UIKit
 
-/// 연락처 추가, 수정, 삭제를 위한 프로토콜
-protocol PhoneBookEditDelegate: AnyObject {
-    /// 연락처 데이터를 수정하는 메서드
-    /// - Parameters:
-    ///   - editedPhoneBook: 수정된 연락처 데이터
-    ///   - index: 수정된 연락처 데이터의 위치
-    func EditPhoneBook(_ editedPhoneBook: PhoneBook, at index: Int)
-    
-    /// 연락처 데이터를 새로 추가하는 메서드
-    /// - Parameter newPhoneBook: 새로 추가된 연락처 데이터
-    func AddNewPhoneBook(_ newPhoneBook: PhoneBook)
-    
-    /// 연락처 데이터를 삭제하는 메서드
-    /// - Parameter index: 삭제할 연락처의 위치
-    func DeletePhoneBook(at index: Int)
-}
-
 /// 연락처 데이터를 추가, 수정 화면을 관리하는 뷰 컨트롤러
 class PhoneBookViewController: UIViewController {
 
@@ -104,11 +87,11 @@ extension PhoneBookViewController: EditViewDelegate {
         
         if isEditingMode, let index = phoneBookIndex {
             // 데이터 수정
-            delegate?.EditPhoneBook(newPhoneBook, at: index)
+            delegate?.editPhoneBook(newPhoneBook, at: index)
         }
         else {
             // 데이터 추가
-            delegate?.AddNewPhoneBook(newPhoneBook)
+            delegate?.addNewPhoneBook(newPhoneBook)
         }
         
         // ViewController로 되돌아가기
@@ -153,7 +136,7 @@ extension PhoneBookViewController: EditViewDelegate {
         
         // '삭제' 클릭시 연락처 삭제
         let confirmAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-            self.delegate?.DeletePhoneBook(at: index)
+            self.delegate?.deletePhoneBook(at: index)
             let alert = UIAlertController(title: "안내", message: "연락처가 삭제 되었습니다.", preferredStyle: .alert)
             
             let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in

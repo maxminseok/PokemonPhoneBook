@@ -10,7 +10,7 @@ import UIKit
 /// 앱의 메인 화면을 관리하는 뷰 컨트롤러
 /// - 연락처 데이터인 dataSource를 이곳에서 관리합니다.
 class ViewController: UIViewController {
-
+    
     private let mainView: MainView = .init()
     
     // 연락처 데이터
@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     override func loadView() {
         self.view = mainView
     }
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(handleDelete))
     }
-
+    
 }
 
 // MARK: - 이벤트 핸들링
@@ -124,7 +124,7 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataSource.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.id) as? TableViewCell else {
             return UITableViewCell()
@@ -138,7 +138,7 @@ extension ViewController: UITableViewDataSource {
 // MARK: - PhoneBookEditDelegate 프로토콜 메서드 구현
 // 데이터 추가, 수정, 삭제를 위한 메서드 구현
 extension ViewController: PhoneBookEditDelegate {
-    func EditPhoneBook(_ editedPhoneBook: PhoneBook, at index: Int) {
+    func editPhoneBook(_ editedPhoneBook: PhoneBook, at index: Int) {
         dataSource[index] = editedPhoneBook
         
         if let encoded = try? JSONEncoder().encode(dataSource) {
@@ -148,7 +148,7 @@ extension ViewController: PhoneBookEditDelegate {
         mainView.reloadTableView()
     }
     
-    func AddNewPhoneBook(_ newPhoneBook: PhoneBook) {
+    func addNewPhoneBook(_ newPhoneBook: PhoneBook) {
         dataSource.append(newPhoneBook)
         
         if let encoded = try? JSONEncoder().encode(dataSource) {
@@ -158,7 +158,7 @@ extension ViewController: PhoneBookEditDelegate {
         mainView.reloadTableView()
     }
     
-    func DeletePhoneBook(at index: Int) {
+    func deletePhoneBook(at index: Int) {
         dataSource.remove(at: index)
         
         if let encoded = try? JSONEncoder().encode(dataSource) {
