@@ -48,8 +48,13 @@
 
 ## Controller 폴더
 메인 뷰를 관리하는 뷰 컨트롤러와, 추가 및 수정을 위한 뷰 컨트롤러가 구현되어 있는 폴더입니다.
-- ViewController : 메인 뷰인 MainView의 UI 설정과 동작을 관리하는 뷰 컨트롤러 입니다.
+- ViewController : 메인 뷰인 MainView의 UI 설정과 동작 및 연락처 데이터인 dataSource를 관리하는 뷰 컨트롤러 입니다.
 - PhoneBookViewController : 추가 및 삭제를 위한 EditView의 UI 설정과 동작을 관리하는 뷰 컨트롤러 입니다.
+
+## Protocol 폴더
+View와 각 Controller의 역할에 따른 데이터 통신을 위한 프로토콜이 정의되어 있는 폴더입니다.
+- PhoneBookEditDelegate : 연락처 데이터 처리를 메인 뷰 컨트롤러인 ViewController에 위임하기 위한 프로토콜 입니다.
+- EditViewDelegate : EditView에 있는 버튼들의 이벤트 처리를 위한 프로토콜입니다.
 
 ---
 
