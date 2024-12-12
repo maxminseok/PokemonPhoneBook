@@ -1,5 +1,5 @@
 //
-//  FetchPokemonImage.swift
+//  NetworkManager.swift
 //  Pokemon
 //
 //  Created by t2023-m0072 on 12/11/24.
@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// 서버에서 받아올 포켓몬 데이터를 저장할 구조체
 struct PokemonData: Codable {
     let id: Int
     let name: String
@@ -15,12 +16,14 @@ struct PokemonData: Codable {
     let sprites: UrlImage
 }
 
+/// 포켓몬 데이터 중 이미지를 저장할 구조체
 struct UrlImage: Codable {
     let front_default: String
 }
 
+/// 서버에서 데이터를 불러오는 fetchData 메서드가 있는 클래스
 class NetworkManager {
-    // 서버 데이터를 불러오는 메서드
+    // 서버 데이터를 불러오는 일반적인 형태의 메서드
     func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
         let session = URLSession(configuration: .default)
         session.dataTask(with: URLRequest(url: url)) { data, response, error in

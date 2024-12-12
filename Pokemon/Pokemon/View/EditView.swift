@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+/// 이미지 생성과 삭제 버튼 처리를 위한 프로토콜
 protocol EditViewDelegate: AnyObject {
     func didTapCreateImageButton()
     func didTapDeleteButton()
@@ -18,7 +19,7 @@ class EditView: UIView {
     private let margin = Margin()
     weak var delegate: EditViewDelegate?
     
-    // 프로필 이미지 뷰
+    /// 프로필 이미지 뷰
     lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -30,7 +31,7 @@ class EditView: UIView {
         return imageView
     }()
     
-    // 랜덤 이미지 생성 버튼
+    /// 랜덤 이미지 생성 버튼
     let createImageButton: UIButton = {
         let button = UIButton()
         button.setTitle("랜덤 이미지 생성", for: .normal)
@@ -40,7 +41,7 @@ class EditView: UIView {
         return button
     }()
     
-    // 이름 입력 텍스트 뷰
+    /// 이름 입력 텍스트 뷰
     let nameTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .label
@@ -51,7 +52,7 @@ class EditView: UIView {
         return textView
     }()
     
-    // 전화번호 입력 텍스트 뷰
+    /// 전화번호 입력 텍스트 뷰
     let phoneNumberTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .label
@@ -62,7 +63,7 @@ class EditView: UIView {
         return textView
     }()
     
-    // 해당 연락처 삭제 버튼
+    /// 연락처 개별 삭제 버튼
     lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("삭제", for: .normal)
@@ -128,16 +129,19 @@ class EditView: UIView {
         }
     }
     
-    // 이미지 생성 버튼 핸들러 위임
+    /// 이미지 생성 버튼 이벤트 처리를 위한 메서드
+    /// - 이벤트 처리는 EditView에 대한 컨트롤러인 PhoneBookViewController에 위임합니다.
     @objc private func createImageButtonTapped() {
         delegate?.didTapCreateImageButton()
     }
     
+    /// 연락처 개별 삭제 버튼 이벤트 처리를 위한 메서드
+    /// - 이벤트 처리는 EditView에 대한 컨트롤러인 PhoneBookViewController에 위임합니다.
     @objc private func deleteButtonTapped() {
         delegate?.didTapDeleteButton()
     }
     
-    // 삭제 버튼 숨김 설정(수정일때만 보이게 하기)
+    /// 삭제 버튼 숨김 설정을 위한 메서드
     func setDeleteButtonHidden(_ isHidden: Bool) {
         deleteButton.isHidden = isHidden
     }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 연락처 데이터를 저장할 구조체
 struct PhoneBook: Codable {
     let name: String
     let phoneNumber: String

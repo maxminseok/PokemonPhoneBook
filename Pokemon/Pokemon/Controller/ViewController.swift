@@ -7,9 +7,12 @@
 
 import UIKit
 
+/// 앱의 메인 화면을 관리하는 뷰 컨트롤러
+/// - 연락처 데이터인 dataSource를 이곳에서 관리합니다.
 class ViewController: UIViewController {
 
     private let mainView: MainView = .init()
+    
     // 연락처 데이터
     private var dataSource = [PhoneBook]()
     
@@ -27,7 +30,7 @@ class ViewController: UIViewController {
         setNavigationBar()
     }
     
-    // 네비게이션 바 설정
+    // MainView 네비게이션 바 설정
     private func setNavigationBar() {
         navigationItem.title = "친구 목록"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
@@ -36,9 +39,10 @@ class ViewController: UIViewController {
 
 }
 
-// 추가/삭제 버튼 이벤트 처리
+// MARK: - 이벤트 핸들링
+// 추가,삭제 버튼 이벤트 처리
 extension ViewController {
-    // 버튼 클릭시 추가를 위한 화면으로 이동
+    /// 버튼 클릭시 추가를 위한 화면으로 이동
     @objc private func addButtonTapped() {
         let phoneBookVC = PhoneBookViewController()
         phoneBookVC.delegate = self
@@ -46,13 +50,9 @@ extension ViewController {
         self.navigationController?.pushViewController(phoneBookVC, animated: true)
     }
     
-    // 삭제 확인 안내 Alert
+    /// 삭제 확인 안내 Alert
     @objc private func handleDelete() {
-        let alert = UIAlertController(
-            title: "삭제",
-            message: "연락처를 전부 삭제할까요?",
-            preferredStyle: .alert
-        )
+        let alert = UIAlertController(title: "삭제", message: "연락처를 전부 삭제할까요?", preferredStyle: .alert)
         
         let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
             self.resetDataButtonTapped()
@@ -66,13 +66,9 @@ extension ViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    // 삭제 완료 안내 Alert
+    /// 삭제 완료 안내 Alert
     private func handleConfirm() {
-        let alert = UIAlertController(
-            title: "안내",
-            message: "모든 연락처가 삭제 되었습니다.",
-            preferredStyle: .alert
-        )
+        let alert = UIAlertController(title: "안내", message: "모든 연락처가 삭제 되었습니다.", preferredStyle: .alert)
         
         let confirmAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
         alert.addAction(confirmAction)
@@ -80,16 +76,16 @@ extension ViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    // 전체 연락처 데이터 삭제
+    /// 전체 연락처 데이터 삭제
     func resetDataButtonTapped() {
         UserDefaults.standard.removeObject(forKey: "PhoneBook")
         dataSource.removeAll()
-        mainView.friendsListTableView.reloadData()
+        mainView.reloadTableView()
         handleConfirm()
     }
 }
 
-// 테이블 뷰 reload 설정
+// MARK: - 테이블 뷰 리로드
 extension ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -104,7 +100,7 @@ extension ViewController {
         mainView.reloadTableView()
     }
 }
-
+// MARK: - 테이블 뷰 Delegate 설정
 // 테이블 뷰 Delegate 설정
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -122,13 +118,13 @@ extension ViewController: UITableViewDelegate {
         self.navigationController?.pushViewController(phoneBookVC, animated: true)
     }
 }
-
+// MARK: - 테이블 뷰 DataSource 설정
 // 테이블 뷰 dataSource 설정
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataSource.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.id) as? TableViewCell else {
             return UITableViewCell()
@@ -139,7 +135,8 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
-// 데이터 추가, 수정, 삭제 메서드 구현
+// MARK: - PhoneBookEditDelegate 프로토콜 메서드 구현
+// 데이터 추가, 수정, 삭제를 위한 메서드 구현
 extension ViewController: PhoneBookEditDelegate {
     func EditPhoneBook(_ editedPhoneBook: PhoneBook, at index: Int) {
         dataSource[index] = editedPhoneBook

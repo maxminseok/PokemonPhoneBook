@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// UI 세팅에 쓸 간격과 사이즈를 저장한 구조체
 struct Margin {
     var heightRatio: CGFloat {
         UIScreen.main.bounds.height / 874

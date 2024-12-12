@@ -11,6 +11,7 @@ final class TableViewCell: UITableViewCell {
     
     static let id = "TableViewCell"
     
+    /// 이름 레이블
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "이름"
@@ -18,6 +19,7 @@ final class TableViewCell: UITableViewCell {
         return label
     }()
     
+    /// 전화번호 레이블
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
         label.text = "010-0000-0000"
@@ -25,6 +27,7 @@ final class TableViewCell: UITableViewCell {
         return label
     }()
     
+    /// 프로필 이미지 뷰
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -46,6 +49,7 @@ final class TableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // 셀의 UI 구성
     private func configureUI() {
         contentView.backgroundColor = .systemBackground
         [
@@ -71,6 +75,7 @@ final class TableViewCell: UITableViewCell {
         }
     }
     
+    /// UITableViewCell의 데이터를 받아 세팅하는 메서드
     public func configureCell(phoneBook: PhoneBook) {
         profileImageView.image = UIImage(data: phoneBook.image)
         nameLabel.text = phoneBook.name

@@ -8,11 +8,13 @@
 import UIKit
 import SnapKit
 
+/// 연락처 목록을 나타내는 메인 뷰  
+/// UITableView를 정의하고 있습니다.
 class MainView: UIView {
     
     private let margin = Margin()
 
-    // 연락처 데이터를 띄울 테이블 뷰
+    /// 연락처 데이터를 띄울 테이블 뷰
     lazy var friendsListTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
@@ -44,13 +46,16 @@ class MainView: UIView {
         }
     }
     
-    // ViewController에서 테이블 뷰 delegate와 dataSource 설정할 수 있도록 허용하는 메서드
+    /// ViewController에서 테이블 뷰 delegate와 dataSource 설정할 수 있도록 허용하는 메서드
+    /// - Parameters:
+    ///   - delegate: 테이블 뷰 설정을 위임 받을 객체
+    ///   - dataSource: 테이블 뷰에 띄울 데이터소스 관리를 위임 받을 객체
     func setTableViewDelegate(delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
         friendsListTableView.delegate = delegate
         friendsListTableView.dataSource = dataSource
     }
     
-    // ViewController에서 테이블 뷰 리로드 할 때 사용할 메서드
+    /// 테이블 뷰를 리로드 할 때 사용할 메서드
     func reloadTableView() {
         friendsListTableView.reloadData()
     }
