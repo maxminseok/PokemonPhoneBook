@@ -117,6 +117,17 @@ extension ViewController: UITableViewDelegate {
         phoneBookVC.phoneBookIndex = indexPath.row
         self.navigationController?.pushViewController(phoneBookVC, animated: true)
     }
+    
+    // 슬라이딩으로 셀 삭제하는 메서드
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            dataSource.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            mainView.reloadTableView()
+        }
+    }
+    
 }
 // MARK: - 테이블 뷰 DataSource 설정
 // 테이블 뷰 dataSource 설정
